@@ -10,12 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>queue</artifactId>
-
-
-    <properties>
-        <dir>C:/Users/Yura_Vusach/Desktop/algorythms/.lift/algs4.jar</dir>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.algs4</groupId>
