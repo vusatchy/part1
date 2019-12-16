@@ -1,4 +1,3 @@
-import javax.xml.bind.ValidationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -59,33 +58,41 @@ public class Deque<T> implements Iterable<T> {
 
     // remove and return the item from the front
     public T removeFirst() {
-        size--;
         if (root == null) {
             throw new NoSuchElementException();
         } else {
+            size--;
             T value = root.value;
-            root = root.next;
-            root.prev = null;
+            if (root.next != null) {
+                root = root.next;
+                root.prev = null;
+            } else {
+                root = null;
+            }
             return value;
         }
     }
 
     // remove and return the item from the back
     public T removeLast() {
-        size--;
         if (root == null) {
             throw new NoSuchElementException();
         } else {
+            size--;
             Node<T> last = findLast(root);
             T value = last.getValue();
-            last.prev.next = null;
+            if (last != root) {
+                last.prev.next = null;
+            } else {
+                root = null;
+            }
             return value;
         }
     }
 
     // return an iterator over items in order from front to back
     public Iterator<T> iterator() {
-        return null;
+        return new DequeIterator();
     }
 
 
@@ -97,16 +104,6 @@ public class Deque<T> implements Iterable<T> {
         return walk;
     }
 
-    private void printAll() {
-        Node<T> walk = root;
-        while (walk.next != null) {
-            System.out.println(walk.value);
-            walk = walk.next;
-        }
-        System.out.println(walk.value);
-
-    }
-
     // unit testing (required)
     public static void main(String[] args) {
         Deque<String> deque = new Deque<String>();
@@ -114,15 +111,12 @@ public class Deque<T> implements Iterable<T> {
         deque.addLast("2");
         deque.addFirst("3");
         deque.addFirst("4");
-        deque.printAll();
-        System.out.println("--------------------");
-        System.out.println(deque.removeFirst());
+        Iterator<String> iterator = deque.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
         System.out.println(deque.removeLast());
-        System.out.println("--------------------");
-        deque.printAll();
-        System.out.println("--------------------");
         System.out.println(deque.removeFirst());
-        System.out.println(deque.removeLast());
     }
 
 
@@ -166,6 +160,25 @@ public class Deque<T> implements Iterable<T> {
 
         public void setPrev(Node<T> prev) {
             this.prev = prev;
+        }
+    }
+
+    private class DequeIterator implements Iterator<T> {
+
+        private Node<T> current = root;
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public T next() {
+            T value = current.getValue();
+            current = current.next;
+            return value;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
         }
     }
 }
