@@ -4,17 +4,17 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class RandomizedQueue<T> implements Iterable<T> {
+public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private int index = 0;
 
     private static final int MAX_CAPACCITY = 10;
 
-    private T[] queue;
+    private Item[] queue;
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        queue = (T[]) new Object[MAX_CAPACCITY];
+        queue = (Item[]) new Object[MAX_CAPACCITY];
     }
 
     // is the randomized queue empty?
@@ -29,7 +29,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
     }
     // add the item
 
-    public void enqueue(T item) {
+    public void enqueue(Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
         }
@@ -40,18 +40,18 @@ public class RandomizedQueue<T> implements Iterable<T> {
     }
     // remove and return a random item
 
-    public T dequeue() {
+    public Item dequeue() {
         if (index == 0) {
             throw new NoSuchElementException();
         }
         if (index == 1) {
-            T value = queue[0];
+            Item value = queue[0];
             queue[0] = null;
             index--;
             return value;
         }
         int randomIndex = randomIndex();
-        T value = queue[randomIndex];
+        Item value = queue[randomIndex];
         if (randomIndex == index - 1) {
             queue[randomIndex] = null;
         } else {
@@ -63,7 +63,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
     }
 
     // return a random item (but do not remove it)
-    public T sample() {
+    public Item sample() {
         if (index == 0) {
             throw new NoSuchElementException();
         }
@@ -74,7 +74,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
     }
 
     // return an independent iterator over items in random order
-    public Iterator<T> iterator() {
+    public Iterator<Item> iterator() {
         return new RandomizedQueueIterator();
     }
 
@@ -90,10 +90,10 @@ public class RandomizedQueue<T> implements Iterable<T> {
         return StdRandom.uniform(0, index);
     }
 
-    private class RandomizedQueueIterator implements Iterator<T> {
+    private class RandomizedQueueIterator implements Iterator<Item> {
 
         private int i = 0;
-        private T[] array = Arrays.copyOfRange(queue, 0, index);
+        private Item[] array = Arrays.copyOfRange(queue, 0, index);
 
         public RandomizedQueueIterator() {
             StdRandom.shuffle(array);
@@ -105,7 +105,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
         }
 
         @Override
-        public T next() {
+        public Item next() {
             return array[i++];
         }
 

@@ -1,9 +1,9 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Deque<T> implements Iterable<T> {
+public class Deque<Item> implements Iterable<Item> {
 
-    private Node<T> root;
+    private Node<Item> root;
 
     private int size = 0;
 
@@ -23,15 +23,15 @@ public class Deque<T> implements Iterable<T> {
     }
 
     // add the item to the front
-    public void addFirst(T item) {
+    public void addFirst(Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
         }
         size++;
         if (root == null) {
-            root = new Node<T>(item);
+            root = new Node<Item>(item);
         } else {
-            Node<T> nextNode = new Node<T>(item);
+            Node<Item> nextNode = new Node<Item>(item);
             root.prev = nextNode;
             nextNode.next = root;
             root = nextNode;
@@ -40,16 +40,16 @@ public class Deque<T> implements Iterable<T> {
     }
 
     // add the item to the back
-    public void addLast(T item) {
+    public void addLast(Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
         }
         size++;
         if (root == null) {
-            root = new Node<T>(item);
+            root = new Node<Item>(item);
         } else {
-            Node<T> last = findLast(root);
-            Node<T> newNode = new Node<T>(item);
+            Node<Item> last = findLast(root);
+            Node<Item> newNode = new Node<Item>(item);
             newNode.prev = last;
             last.next = newNode;
 
@@ -57,12 +57,12 @@ public class Deque<T> implements Iterable<T> {
     }
 
     // remove and return the item from the front
-    public T removeFirst() {
+    public Item removeFirst() {
         if (root == null) {
             throw new NoSuchElementException();
         } else {
             size--;
-            T value = root.value;
+            Item value = root.value;
             if (root.next != null) {
                 root = root.next;
                 root.prev = null;
@@ -74,13 +74,13 @@ public class Deque<T> implements Iterable<T> {
     }
 
     // remove and return the item from the back
-    public T removeLast() {
+    public Item removeLast() {
         if (root == null) {
             throw new NoSuchElementException();
         } else {
             size--;
-            Node<T> last = findLast(root);
-            T value = last.getValue();
+            Node<Item> last = findLast(root);
+            Item value = last.getValue();
             if (last != root) {
                 last.prev.next = null;
             } else {
@@ -91,13 +91,13 @@ public class Deque<T> implements Iterable<T> {
     }
 
     // return an iterator over items in order from front to back
-    public Iterator<T> iterator() {
+    public Iterator<Item> iterator() {
         return new DequeIterator();
     }
 
 
-    private Node<T> findLast(Node<T> root) {
-        Node<T> walk = root;
+    private Node<Item> findLast(Node<Item> root) {
+        Node<Item> walk = root;
         while (walk.next != null) {
             walk = walk.next;
         }
@@ -106,8 +106,8 @@ public class Deque<T> implements Iterable<T> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        Deque<String> deque = new Deque<String>();
-        deque.addLast("1");
+        Deque<String> deque = new Deque<>();
+        /*deque.addLast("1");
         deque.addLast("2");
         deque.addFirst("3");
         deque.addFirst("4");
@@ -116,7 +116,8 @@ public class Deque<T> implements Iterable<T> {
             System.out.println(iterator.next());
         }
         System.out.println(deque.removeLast());
-        System.out.println(deque.removeFirst());
+        System.out.println(deque.removeFirst());*/
+
     }
 
 
@@ -163,16 +164,16 @@ public class Deque<T> implements Iterable<T> {
         }
     }
 
-    private class DequeIterator implements Iterator<T> {
+    private class DequeIterator implements Iterator<Item> {
 
-        private Node<T> current = root;
+        private Node<Item> current = root;
 
         public boolean hasNext() {
             return current != null;
         }
 
-        public T next() {
-            T value = current.getValue();
+        public Item next() {
+            Item value = current.getValue();
             current = current.next;
             return value;
         }
